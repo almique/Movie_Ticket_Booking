@@ -22,7 +22,7 @@ def scheduleMovie(slotDescription: str, \
                             endTime: datetime, \
                             slotType: SlotType, \
                             genre: Genre):
-    ticketAdmin.scheduleTicketSlot(slotDescription, startTime, endTime, slotType, genre)
-    pass
+    return ticketAdmin.scheduleTicketSlot(slotDescription, startTime, endTime, slotType, genre)
+    
 
  

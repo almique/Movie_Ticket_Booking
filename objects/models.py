@@ -4,7 +4,8 @@ from typing import List, Optional
 from objects.enumerations import Genre, TicketStatus, SlotType, CustomerTier
 from fastapi import FastAPI, Path
 from pydantic import BaseModel
-
+from pynamodb.models import Model
+from pynamodb.attributes import UnicodeAttribute
 
 
 class User():
@@ -45,9 +46,11 @@ class TicketSlot():
         self.slotType = slotType
         self.genre = genre
         self.availTickets = availTickets
-    
-
 """
+
+from pydantic.dataclasses import dataclass
+
+
 class TicketSlot(BaseModel):
     slotId: str
     slotDescription: str
@@ -56,7 +59,9 @@ class TicketSlot(BaseModel):
     slotType: SlotType 
     genre: Genre
     availTickets: int
-
+    
+    class Config:
+        orm_mode=True
 
 class TicketCustomer(User):
     registrationDate: datetime
@@ -104,3 +109,4 @@ class TicketAdmin(User):
 
 
     
+ 
