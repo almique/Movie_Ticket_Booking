@@ -1,6 +1,6 @@
-import enum
+from enum import Enum
 
-class Genre(enum.Enum):
+class Genre(str, Enum):
     Action = "Action"
     Adventure = "Adventure"
     Comedy = "Comedy"
@@ -24,17 +24,17 @@ class Genre(enum.Enum):
     Urban = "Urban"
     Animation = "Animation"
 
-class TicketStatus(enum.Enum):
+class TicketStatus(str, Enum):
     Expired = "Expired"
     Active = "Active"
     Archived = "Archived"
 
-class SlotType(enum.Enum):
+class SlotType(str, Enum):
     Movie = "Movie"
     Documentary = "Documentary"
     Concert = "Concert"
 
-class CustomerTier(enum.Enum):
+class CustomerTier(str, Enum):
     Gold = "Gold"
     Silver = "Silver"
     Platinum = "Platinum"

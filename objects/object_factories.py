@@ -14,23 +14,15 @@ class TicketSlotFactory():
                             slotType: TicketSlot, \
                             genre: Genre) -> TicketSlot:
         """   
-        return TicketSlot(slotId = str(random.randint(1,1000000)), \
-            slotDescription = slotDescription, \
-            startTime = startTime, \
-            endTime = endTime, \
-            slotType = slotType, \
-                genre = genre, availTickets = 20) # add a class for availticket
+            arguments: Details of a ticket slot
+            return_type: TicketSlot Object
+            description: Validates and saves a new TicketSlot
         """
         ticketSlot = TicketSlotORM(slotId = str(random.randint(1,1000000)), \
             slotDescription = slotDescription, \
             startTime = startTime, \
             endTime = endTime, \
-            slotType = str(slotType), \
-                genre = str(genre), availTickets = 20)
-        #ticketSlot.save()
-        return TicketSlot.from_orm(slotId = str(random.randint(1,1000000)), \
-            slotDescription = slotDescription, \
-            startTime = startTime, \
-            endTime = endTime, \
-            slotType = slotType, \
-                genre = genre, availTickets = 20)
+            slotType = slotType.value, \
+                genre = genre.value, availTickets = 20)
+        ticketSlot.save()
+        return TicketSlot.from_orm(ticketSlot)
