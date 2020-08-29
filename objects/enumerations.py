@@ -1,32 +1,40 @@
 import enum
 
 class Genre(enum.Enum):
-    Action = 1
-    Adventure = 2
-    Comedy = 3
-    Crime = 4
-    Drama = 5
-    Fantasy = 6
-    Historical = 7
-    Historical_Fiction = 8
-    Horror = 9
-    Magical_Realism = 10
-    Mystery = 11
-    Philosophical = 12
-    Political = 13
-    Romance = 14
-    Saga = 15
-    Satire = 16
-    Scifi = 17
-    Social = 18
-    Speculative = 19
-    Thriller = 20
-    Urban = 21
-    Animation = 22
-    Documentary = 23
-    Concert = 24
+    Action = "Action"
+    Adventure = "Adventure"
+    Comedy = "Comedy"
+    Crime = "Crime"
+    Drama = "Drama"
+    Fantasy = "Fantasy"
+    Historical = "Historical"
+    Historical_Fiction = "Historical Fiction"
+    Horror = "Horror"
+    Magical_Realism = "Magical Realism"
+    Mystery = "Mystery"
+    Philosophical = "Philosophical"
+    Political = "Political"
+    Romance = "Romance"
+    Saga = "Saga"
+    Satire = "Satire"
+    Scifi = "Scifi"
+    Social = "Social"
+    Speculative = "Speculative"
+    Thriller = "Thriller"
+    Urban = "Urban"
+    Animation = "Animation"
 
 class TicketStatus(enum.Enum):
-    Expired = 0
-    Active = 1
-    Archived = 2
+    Expired = "Expired"
+    Active = "Active"
+    Archived = "Archived"
+
+class SlotType(enum.Enum):
+    Movie = "Movie"
+    Documentary = "Documentary"
+    Concert = "Concert"
+
+class CustomerTier(enum.Enum):
+    Gold = "Gold"
+    Silver = "Silver"
+    Platinum = "Platinum"
