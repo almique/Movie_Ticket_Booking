@@ -27,9 +27,10 @@ def scheduleMovie(slotName: str, slotDescription: str, \
 
 
 
-@app.post("/bookticket")
-def bookTicket(userId: str, movieName: str, movieStartTime: datetime, numTickets: int):
-    return ticketAdmin.bookCustomerTicket(userId, movieName, movieStartTime, numTickets)
+@app.post("/bookTicket")
+def bookTicket(userName: str, userPhoneNumber: str, movieName: str, movieStartTime: datetime, numTickets: int):
+    user = ticketAdmin.resolveOrCreateUser(userName, userPhoneNumber)
+    return ticketAdmin.bookCustomerTicket(user.userId, movieName, movieStartTime, numTickets)
     
 
  

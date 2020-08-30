@@ -40,4 +40,14 @@ class TicketORM(Model):
     ticketSlotId = UnicodeAttribute(null = False)
     ticketStatus =UnicodeAttribute(null=False, default = "Booked")
 
+
+class UserORM(Model):
+    class Meta:
+        table_name = "users"
+        region = os.environ['AWS_DEFAULT_REGION']
+    userId = UnicodeAttribute(null=False, hash_key=True)
+    userName = UnicodeAttribute(null=False)
+    phoneNumber = UnicodeAttribute(null=False)
+
+
     

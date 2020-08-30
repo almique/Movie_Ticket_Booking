@@ -9,7 +9,7 @@ from pynamodb.attributes import UnicodeAttribute
 from objects.orm_model import *
 
 
-class User():
+class User(BaseModel):
     """
         Defines a base abstract class for user
     """
@@ -80,7 +80,7 @@ class TicketCustomer(User):
     
 
 
-class TicketAdmin(User):
+class TicketAdmin():
     def __init__(self, isSystemAdmin=True):
         from objects.object_factories import TicketSlotFactory, TicketFactory
         self.ticketSlotFactory = TicketSlotFactory()
@@ -88,6 +88,10 @@ class TicketAdmin(User):
         if(isSystemAdmin):
             self.userName = "system"
             self.userId = 0
+
+    def resolveOrCreateUser(self, userName: str, userPhoneNumber: str):
+        pass
+
 
     def getTicketSlots(self, slotName: str, startTime: datetime):
         return TicketSlotORM.scan((TicketSlotORM.slotName == slotName) & (TicketSlotORM.startTime == startTime))

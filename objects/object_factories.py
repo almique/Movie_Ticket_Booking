@@ -42,14 +42,14 @@ class TicketFactory():
             ticketSlot.update(actions=[TicketSlotORM.availTickets.set(TicketSlotORM.availTickets - 1)])
             return Ticket.from_orm(ticket)
         return False
-        
-    def _rollbackTicket(self,bookedTicket,ticketSlot):
+
+    def _rollbackTicket(self, bookedTicket, ticketSlot):
         if(ticketSlot.update(actions=[TicketSlotORM.availTickets.set(TicketSlotORM.availTickets + 1)])):
             bookedTicket.delete()
             return True
         return False
 
-    def createTickets(self, userId: str ,ticketSlot: TicketSlot, numTickets: int = 1) -> Ticket:
+    def createTickets(self, userId: str, ticketSlot: TicketSlot, numTickets: int = 1):
         bookedTickets = []
         try:
             for t in range(numTickets):
@@ -58,6 +58,38 @@ class TicketFactory():
         except:
             for bookedTicket in bookedTickets:
                 self._rollbackTicket(bookedTicket, ticketSlot)
+        return bookedTickets
+
+
+class UserFactory():
+    def __init__(self):
+        super().__init__()
+    
+    def __createUser(self, phoneNumber: str, userName: str) -> User:
+        user = UserORM(userId = "U" + str(random.randint(1,1000000)),\
+                            userName = userName ,\
+                            phoneNumber = phoneNumber)
+        try:
+            user.save()
+            return User.from_orm(user)
+        except:
+            return False
+
+    def resolveUser(self, userName: str, phoneNumber: str):
+        users = UserORM.scan((UserORM.userName == userName) & (UserORM.phoneNumber == phoneNumber))
+        for user in users:
+            return user
         return False
 
+    def createOrResolveUser(self, userName: str, phoneNumber: str) -> User:
+        resolvedUser = self.resolveUser(userName, phoneNumber)
+        if(resolvedUser):
+            return User.from_orm(resolvedUser)
+
+        user = UserORM(userId = "U" + str(random.randint(1,1000000)),\
+                            userName = userName ,\
+                            phoneNumber = phoneNumber)
+        user.save()
+        return User.from_orm(user)
+    
 
