@@ -50,7 +50,9 @@ def getUserDetailsByTicketId(ticketId: str):
     user = ticketAdmin.getUserById(ticket.userId)
     return User.from_orm(user) 
  
-
+@app.post("/expireTickets")
+def expiretickets():
+    return ticketAdmin.invalidateTickets()
 
 @app.post("/scheduleMovie")
 def scheduleMovie(slotName: str, slotDescription: str, \

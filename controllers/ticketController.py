@@ -1,5 +1,5 @@
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 from objects.enumerations import Genre, TicketStatus, SlotType, CustomerTier
 from fastapi import FastAPI, Path
@@ -63,8 +63,23 @@ class TicketAdmin():
     def getAllTicketSlots(self) -> List[TicketSlot]:
         return list([TicketSlot.from_orm(t) for t in list(TicketSlotORM.scan())])
 
+    def getAllTicketSlotsAfterTime(self, atime) -> List[TicketSlot]:
+        return list(TicketSlotORM.scan((TicketSlotORM.endTime <= atime)))
+
+
+    def updateTicketStatus(self, ticket, ticketStatus):
+        ticket.update(actions = [TicketORM.ticketStatus.set(ticketStatus)])
+        return ticket
+
     def invalidateTickets(self) -> List[Ticket]:
-        pass
+        expired = []
+        ticketSlots = self.getAllTicketSlotsAfterTime(datetime.now() - timedelta(hours=8))
+        for ticketSlot in ticketSlots:
+            ticketSlot.update(actions = [TicketSlotORM.availTickets.set(0)])
+            tickets = self.getBookedTickets(TicketSlot.from_orm(ticketSlot))
+            for ticket in tickets:
+                expired.append(self.updateTicketStatus(ticket, TicketStatus.Expired))
+        return [Ticket.from_orm(e) for e in expired]
     
     def scheduleTicketSlot(self, slotName: str,slotDescription: str, \
                             startTime: datetime, \
