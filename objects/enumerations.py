@@ -27,7 +27,9 @@ class Genre(str, Enum):
 class TicketStatus(str, Enum):
     Expired = "Expired"
     Booked = "Booked"
+    Canceled = "Canceled"
     Archived = "Archived"
+
 
 class SlotType(str, Enum):
     Movie = "Movie"

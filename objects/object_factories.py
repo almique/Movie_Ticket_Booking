@@ -49,6 +49,13 @@ class TicketFactory():
             return True
         return False
 
+    def cancelTicket(self, bookedTicket, ticketSlot):
+        if(ticketSlot.update(actions=[TicketSlotORM.availTickets.set(TicketSlotORM.availTickets + 1)])):
+            bookedTicket.update(actions=[TicketORM.ticketStatus.set(TicketStatus.Canceled.value)])
+            return Ticket.from_orm(bookedTicket)
+        return False
+
+
     def createTickets(self, userId: str, ticketSlot: TicketSlot, numTickets: int = 1):
         bookedTickets = []
         try:
@@ -81,7 +88,7 @@ class UserFactory():
             return user
         return False
 
-    def createOrResolveUser(self, userName: str, phoneNumber: str) -> User:
+    def resolveOrCreateUser(self, userName: str, phoneNumber: str) -> User:
         resolvedUser = self.resolveUser(userName, phoneNumber)
         if(resolvedUser):
             return User.from_orm(resolvedUser)

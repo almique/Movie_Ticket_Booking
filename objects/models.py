@@ -15,7 +15,10 @@ class User(BaseModel):
     """
     userId: str
     userName: str
-    __phoneNumber: str = None
+    phoneNumber: str = None
+
+    class Config:
+        orm_mode = True
     def getPhoneNumber(self):
         return self.__phoneNumber
 
@@ -34,12 +37,6 @@ class Ticket(BaseModel):
     class Config:
         orm_mode=True
 
-    def updateStatus(self):
-        pass
-    def updateSlot(self):
-        pass
-    def getDetails(self):
-        pass
 
 """
 
@@ -61,18 +58,12 @@ class TicketSlot(BaseModel):
     class Config:
         orm_mode=True
 
-    def fillTicket(Ticket):
-        pass
-    def releaseTicket(Ticket):
-        pass
 
 
 class TicketCustomer(User):
     registrationDate: datetime
     customerTier : CustomerTier
 
-    def getBookedTickets() -> List[Ticket]:
-        pass
     def increaseLoyality():
         pass
     def decreaseLoyality():
@@ -82,39 +73,51 @@ class TicketCustomer(User):
 
 class TicketAdmin():
     def __init__(self, isSystemAdmin=True):
-        from objects.object_factories import TicketSlotFactory, TicketFactory
+        from objects.object_factories import TicketSlotFactory, TicketFactory, UserFactory
         self.ticketSlotFactory = TicketSlotFactory()
         self.ticketFactory = TicketFactory()
+        self.userFactory = UserFactory()
         if(isSystemAdmin):
             self.userName = "system"
             self.userId = 0
 
     def resolveOrCreateUser(self, userName: str, userPhoneNumber: str):
-        pass
+        return self.userFactory.resolveOrCreateUser(userName, userPhoneNumber)
 
+    def getTicketSlotById(self, ticketSlotId: str):
+        return TicketSlotORM.get(ticketSlotId)
 
-    def getTicketSlots(self, slotName: str, startTime: datetime):
-        return TicketSlotORM.scan((TicketSlotORM.slotName == slotName) & (TicketSlotORM.startTime == startTime))
+    def getTicketById(self, ticketId: str):
+        return TicketORM.get(ticketId)
+
+    def getUserById(self, userId: str):
+        return UserORM.get(userId)
+
+    def resolveTicketSlot(self, slotName: str, startTime: datetime):
+        return list(TicketSlotORM.scan((TicketSlotORM.slotName == slotName) & (TicketSlotORM.startTime == startTime)))
 
     def bookCustomerTicket(self, userId: str, movieName: str, \
                           slotStartTime: datetime, numTickets: int) -> Ticket:
-        ticketSlots = self.getTicketSlots(movieName, slotStartTime)
+        ticketSlots = self.resolveTicketSlot(movieName, slotStartTime)
         for ticketSlot in ticketSlots:
             if ticketSlot.availTickets >= numTickets:
                 return self.ticketFactory.createTickets(userId, ticketSlot, numTickets)
         return False
 
-    def updateCustomerTicket(self) -> Ticket:
-        pass
+    def updateTicket(self, ticket, newTicketSlot):
+        newTicket = self.bookCustomerTicket(ticket.userId, newTicketSlot.slotName, newTicketSlot.startTime, 1)
+        if newTicket:
+            oldTicket = self.cancelTicket(ticket, self.getTicketSlotById(ticket.ticketSlotId))
+            return [newTicket, oldTicket]
+        return False
+
 
     def getBookedTickets(self, ticketSlot) -> List[Ticket]:
-        pass
+        return list(TicketORM.scan((TicketORM.ticketSlotId == ticketSlot.slotId) & (TicketORM.ticketStatus == TicketStatus.Booked.value)))
 
-    def deleteTicket(self, ticket) -> bool:
-        pass
+    def cancelTicket(self, ticket, ticketSlot) -> bool:
+        return self.ticketFactory.cancelTicket(ticket, ticketSlot)
 
-    def getCustomerDetail(self, ticket) -> TicketCustomer :
-        pass
 
     def invalidateTickets(self) -> List[Ticket]:
         pass
@@ -127,9 +130,6 @@ class TicketAdmin():
         
         return self.ticketSlotFactory.createTicketSlot(slotName,slotDescription, startTime, endTime, slotType, genre)
 
-
-    def getAvailableTicketSlots(self) -> List[TicketSlot]:
-        pass
 
 
     
