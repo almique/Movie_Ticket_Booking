@@ -6,6 +6,7 @@ from fastapi import FastAPI, Path
 from pydantic import BaseModel
 from pynamodb.models import Model
 from pynamodb.attributes import UnicodeAttribute
+from objects.orm_model import *
 
 
 class User():
@@ -26,26 +27,22 @@ class Ticket(BaseModel):
         Defines a base abstract class for Ticket
     """
     ticketId: str
+    userId: str
     ticketSlot: datetime
     ticketStatus: TicketStatus
 
+    class Config:
+        orm_mode=True
+
+    def updateStatus(self):
+        pass
+    def updateSlot(self):
+        pass
+    def getDetails(self):
+        pass
 
 """
-class TicketSlot():
-    def __init__(self, slotId: str, \
-    slotDescription: str, \
-    startTime: datetime, \
-    endTime: datetime , \
-    slotType: SlotType , \
-    genre: Genre, \
-    availTickets: int):
-        self.slotId = slotId
-        self.slotDescription = slotDescription
-        self.startTime = startTime
-        self.endTime = endTime
-        self.slotType = slotType
-        self.genre = genre
-        self.availTickets = availTickets
+
 """
 
 from pydantic.dataclasses import dataclass
@@ -53,6 +50,7 @@ from pydantic.dataclasses import dataclass
 
 class TicketSlot(BaseModel):
     slotId: str
+    slotName: str
     slotDescription: str
     startTime: datetime
     endTime: datetime 
@@ -70,15 +68,22 @@ class TicketCustomer(User):
 
 class TicketAdmin(User):
     def __init__(self, isSystemAdmin=True):
-        from objects.object_factories import TicketSlotFactory
+        from objects.object_factories import TicketSlotFactory, TicketFactory
         self.ticketSlotFactory = TicketSlotFactory()
+        self.ticketFactory = TicketFactory()
         if(isSystemAdmin):
             self.userName = "system"
             self.userId = 0
 
+    def getTicketSlot(self, slotName: str, startTime: datetime):
+        return TicketSlotORM.query(filter_condition=(TicketSlotORM.slotName == slotName )) #& TicketSlotORM.startTime == startTime))
 
-    def bookCustomerTicket(self) -> Ticket:
-        pass
+    def bookCustomerTicket(self, userId: str, movieName: str, \
+                          slotStartTime: datetime ) -> Ticket:
+        ticketSlot = self.getTicketSlot(movieName, slotStartTime)
+        if(ticketSlot and ticketSlot.availTickets > 0):
+            return self.ticketFactory.createTicket(userId, ticketSlot)
+        return False
 
     def updateCustomerTicket(self) -> Ticket:
         pass
@@ -94,15 +99,15 @@ class TicketAdmin(User):
 
     def invalidateTickets(self) -> List[Ticket]:
         pass
-
-    def scheduleTicketSlot(self, slotDescription: str, \
+    
+    def scheduleTicketSlot(self, slotName: str,slotDescription: str, \
                             startTime: datetime, \
                             endTime: datetime, \
                             slotType: TicketSlot, \
                             genre: Genre) -> TicketSlot:
         
-        return self.ticketSlotFactory.createTicketSlot(slotDescription, startTime, endTime, slotType, genre)
-        
+        return self.ticketSlotFactory.createTicketSlot(slotName,slotDescription, startTime, endTime, slotType, genre)
+
 
     def getAvailableTicketSlots(self) -> List[TicketSlot]:
         pass
