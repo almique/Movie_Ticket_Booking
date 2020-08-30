@@ -33,10 +33,31 @@ class TicketFactory():
     def __init__(self):
         super().__init__()
     
-    def createTicket(self, userId: str ,ticketSlot: TicketSlot) -> Ticket:
+    def _createTicket(self, userId: str ,ticketSlot: TicketSlot) -> Ticket:
         ticket = TicketORM(ticketId = "TKT" + str(random.randint(1,1000000)),\
                             userId = userId ,\
                             ticketSlotId = ticketSlot.slotId,\
-                            ticketStatus = TicketStatus.Booked)
-        ticket.save()
-        return Ticket.from_orm(ticket)
+                            ticketStatus = TicketStatus.Booked.value)
+        if(ticket.save()):
+            ticketSlot.update(actions=[TicketSlotORM.availTickets.set(TicketSlotORM.availTickets - 1)])
+            return Ticket.from_orm(ticket)
+        return False
+        
+    def _rollbackTicket(self,bookedTicket,ticketSlot):
+        if(ticketSlot.update(actions=[TicketSlotORM.availTickets.set(TicketSlotORM.availTickets + 1)])):
+            bookedTicket.delete()
+            return True
+        return False
+
+    def createTickets(self, userId: str ,ticketSlot: TicketSlot, numTickets: int = 1) -> Ticket:
+        bookedTickets = []
+        try:
+            for t in range(numTickets):
+                bookedTickets.append(self._createTicket(userId, ticketSlot))
+                # Test Case - Handle case when only some tickets were booked (rollback transaction)
+        except:
+            for bookedTicket in bookedTickets:
+                self._rollbackTicket(bookedTicket, ticketSlot)
+        return False
+
+

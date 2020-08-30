@@ -28,7 +28,7 @@ class Ticket(BaseModel):
     """
     ticketId: str
     userId: str
-    ticketSlot: datetime
+    ticketSlotId: int
     ticketStatus: TicketStatus
 
     class Config:
@@ -61,9 +61,23 @@ class TicketSlot(BaseModel):
     class Config:
         orm_mode=True
 
+    def fillTicket(Ticket):
+        pass
+    def releaseTicket(Ticket):
+        pass
+
+
 class TicketCustomer(User):
     registrationDate: datetime
     customerTier : CustomerTier
+
+    def getBookedTickets() -> List[Ticket]:
+        pass
+    def increaseLoyality():
+        pass
+    def decreaseLoyality():
+        pass
+    
 
 
 class TicketAdmin(User):
@@ -75,14 +89,15 @@ class TicketAdmin(User):
             self.userName = "system"
             self.userId = 0
 
-    def getTicketSlot(self, slotName: str, startTime: datetime):
-        return TicketSlotORM.query(filter_condition=(TicketSlotORM.slotName == slotName )) #& TicketSlotORM.startTime == startTime))
+    def getTicketSlots(self, slotName: str, startTime: datetime):
+        return TicketSlotORM.scan((TicketSlotORM.slotName == slotName) & (TicketSlotORM.startTime == startTime))
 
     def bookCustomerTicket(self, userId: str, movieName: str, \
-                          slotStartTime: datetime ) -> Ticket:
-        ticketSlot = self.getTicketSlot(movieName, slotStartTime)
-        if(ticketSlot and ticketSlot.availTickets > 0):
-            return self.ticketFactory.createTicket(userId, ticketSlot)
+                          slotStartTime: datetime, numTickets: int) -> Ticket:
+        ticketSlots = self.getTicketSlots(movieName, slotStartTime)
+        for ticketSlot in ticketSlots:
+            if ticketSlot.availTickets >= numTickets:
+                return self.ticketFactory.createTickets(userId, ticketSlot, numTickets)
         return False
 
     def updateCustomerTicket(self) -> Ticket:

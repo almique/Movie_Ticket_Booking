@@ -28,8 +28,8 @@ def scheduleMovie(slotName: str, slotDescription: str, \
 
 
 @app.post("/bookticket")
-def bookTicket(userId: str, movieName: str, movieStartTime: datetime):
-    return ticketAdmin.bookCustomerTicket(userId, movieName, movieStartTime)
+def bookTicket(userId: str, movieName: str, movieStartTime: datetime, numTickets: int):
+    return ticketAdmin.bookCustomerTicket(userId, movieName, movieStartTime, numTickets)
     
 
  

@@ -4,6 +4,14 @@ from pynamodb.attributes import (
 )
 import os
 
+class UserORM(Model):
+    class Meta:
+        table_name = "ticketslots"
+        region = os.environ['AWS_DEFAULT_REGION']
+    userId =  UnicodeAttribute(null=False, hash_key=True)
+    userName =  UnicodeAttribute(null=False)
+    __phoneNumber = UnicodeAttribute(null=False)
+
 class TicketSlotORM(Model):
     """
     A DynamoDB TickeSlot 
@@ -11,7 +19,7 @@ class TicketSlotORM(Model):
     class Meta:
         table_name = "ticketslots"
         region = os.environ['AWS_DEFAULT_REGION']
-    slotId = UnicodeAttribute(null=False)
+    slotId = UnicodeAttribute(null=False, hash_key = True)
     slotName = UnicodeAttribute(null=False)
     slotDescription = UnicodeAttribute(null=True)
     startTime =  UTCDateTimeAttribute()
@@ -20,13 +28,16 @@ class TicketSlotORM(Model):
     genre = UnicodeAttribute(null=False)
     availTickets = NumberAttribute(default=20)
 
+    def __repr__(self):
+        return "Movie({}, {}, {})".format(self.slotId, self.slotName, self.startTime)
+
 class TicketORM(Model):
     class Meta:
         table_name = "tickets"
         region = os.environ['AWS_DEFAULT_REGION']
-    ticketId = UnicodeAttribute(null=False)
+    ticketId = UnicodeAttribute(null=False, hash_key=True)
     userId = UnicodeAttribute(null=False)
-    ticketSlotId: UTCDateTimeAttribute(null = False)
-    ticketStatus: UnicodeAttribute(null=False, default = "Booked")
+    ticketSlotId = UnicodeAttribute(null = False)
+    ticketStatus =UnicodeAttribute(null=False, default = "Booked")
 
     
