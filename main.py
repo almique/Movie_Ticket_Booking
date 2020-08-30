@@ -25,7 +25,7 @@ def bookTicket(userName: str, userPhoneNumber: str, movieName: str, movieStartTi
 @app.post("/updateMovieSlotForTicket",
 summary = "Update a Ticket Time",
 description = "Update Ticket Time by ticketId, newMovie and newStartTime",
-tags=["Update Movie Timing"])
+tags=["Update Ticket Timing"])
 def updateMovieSlotForTicket(ticketId: str, newMovie: str, newStartTime: datetime):
     ticket = ticketAdmin.getTicketById(ticketId)
     ticketSlot = ticketAdmin.resolveTicketSlot(newMovie, newStartTime)[0]

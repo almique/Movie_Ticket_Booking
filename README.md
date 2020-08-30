@@ -7,25 +7,75 @@ A Movie Theatre Ticket Booking System Build in Python Using FastAPI.
 
 ## Sample Requests
 
-### Add Movie Slot
+
 
 ### Book User Ticket
 
+```json
+    {
+        "userName": "John", 
+        "userPhoneNumber": "9653864514", 
+        "movieName": "Avatar",
+        "movieStartTime":"2020-11-01 12:22",
+        "numTickets": "3" 
+    }
+```
+
 ### Update Ticket Time
+
+```json
+    {
+        "ticketId": "TKT437664", 
+        "newMovie": "Avatar", 
+        "newStartTime": "2020-11-01 12:22"
+    }
+```
 
 ### Get all Ticket Details
 
+```json
+    {
+        "movieName": "Jumanji", 
+        "movieStartTime": "2017-06-01 12:22"
+    }
+```
+
 ### Get User Details By ticketId
+
+```json
+    {
+        "ticketId": "TKT437664"
+    }
+```
 
 ### Cancel a Ticket By ticketId
 
-### Trigger Tickets Invalidation
+```json
+    {
+        "ticketId": "TKT437664"
+    }
+```
 
-### Movie Scheduler
+### Add Movie Slot
 
-### Get All Movie Slots
+```json
+    {
+        "slotName": "Avatar", 
+        "slotDescription": "Come see avatar", 
+        "startTime": "2017-06-01 12:22",
+        "endTime": "2017-06-01 15:22", 
+        "slotType": "Movie", 
+        "genre": "Animation"
+    }
+```
 
 ### Get All Movie Slots By Genre
+
+```json
+    {
+        "genre": ""
+    }
+```
 
 
 ## Fine-grained API Access
@@ -93,7 +143,7 @@ Build with
 
 
 ```python
-    git clone 
+    git clone https://github.com/almique/Movie_Ticket_Booking.git
     uvicorn main:app --reload
 ```
 
