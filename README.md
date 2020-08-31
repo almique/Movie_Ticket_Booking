@@ -40,7 +40,7 @@ QR Code(Tryit on Your Phone):
     }
 ```
 
-### Get all Ticket Details
+### Get all Booked Tickets for a Movie Slot
 
 ```json
     {

@@ -33,7 +33,7 @@ def updateMovieSlotForTicket(ticketId: str, newMovie: str, newStartTime: datetim
      
 
 @app.post("/getAllTicketsForMovieSlot",
-summary = "Get all Ticket Details",
+summary = "Get all Booked Tickets for a Movie Slot",
 description = "Get Details Of all the tickets for a Movie Slot",
 tags=["Ticket Details"])
 def getAllTicketsForMovieSlot(movieName: str, movieStartTime: datetime):
