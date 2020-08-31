@@ -53,7 +53,7 @@ QR Code(Tryit on Your Phone):
 
 
 ## Sample Requests
-<details><summary>CLICK ME</summary>
+<details><summary>Click To Expand Sample Requests</summary>
 
 ### Book User Ticket
 
@@ -124,8 +124,6 @@ QR Code(Tryit on Your Phone):
 ```
 </details>
 
-## Fine-grained API Access
-![ScreenShot_2](assets/Screenshot_2.png)
 
 # Features
 - [x] Atomicity of Transactions (Transaction as a whole is rolled back if something goes wrong)
