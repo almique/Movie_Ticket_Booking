@@ -69,12 +69,12 @@ QR Code(Tryit on Your Phone):
 
 ```json
     {
-        "slotName": "Avatar", 
-        "slotDescription": "Come see avatar", 
-        "startTime": "2017-06-01 12:22",
-        "endTime": "2017-06-01 15:22", 
+        "slotName": "Skyfall", 
+        "slotDescription": "An ex-MI6 agent steals a hard drive with top secret information to carry out a vendetta on Bond's overseer, M. Bond must face his past in a bid to try and save M.", 
+        "startTime": "2020-11-01 12:22",
+        "endTime": "2020-11-01 15:22", 
         "slotType": "Movie", 
-        "genre": "Animation"
+        "genre": "Action"
     }
 ```
 
@@ -82,7 +82,7 @@ QR Code(Tryit on Your Phone):
 
 ```json
     {
-        "genre": ""
+        "genre": "Action"
     }
 ```
 
