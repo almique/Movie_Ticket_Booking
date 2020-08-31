@@ -3,6 +3,10 @@
 A Movie Theatre Ticket Booking System Build in Python Using FastAPI.
 
 # Swagger Page
+## See It In Action
+LoadBalancerURL: http://ticketlymain-1835126091.ap-south-1.elb.amazonaws.com:8477/docs#/
+QR Code(Tryit on Your Phone): ![QR Code](assets/qrcode.png)
+
 ![Ticketly](assets/Ticketly.png)
 
 ## Sample Requests
