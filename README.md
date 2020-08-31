@@ -13,9 +13,46 @@ QR Code(Tryit on Your Phone):
 
 
 ![Ticketly](assets/Ticketly.png)
+## Object Model
+
+1. **TicketSlot** : A logical entity which defines movieslot (could be extended to documentaries, concerts etc - Hence the name `TicketSlot` and not just `MovieSlot`). It is defined as following:
+```json
+   {
+        "slotName": "Skyfall", 
+        "slotDescription": "An ex-MI6 agent steals a hard drive with top secret information to carry out a vendetta on Bond's overseer, M. Bond must face his past in a bid to try and save M.", 
+        "startTime": "2020-11-01 12:22",
+        "endTime": "2020-11-01 15:22", 
+        "slotType": "Movie", 
+        "genre": "Action"
+    }
+```
+
+**Same movie can have many diffrent `TicketSlot`s if the movie is scheduled at many different timings.**
+
+2. **Ticket** : A logical entity which defines a ticket object at a point in time. Tickets are `Booked` at the time of booking and the state changes to `Expired`, `Canceled`, `Archived` according to `Ticket`s lifecycle which is controled by the `TicketController`.
+
+```json
+    {
+      "ticketStatus": "Booked",
+      "ticketSlotId": "713396",
+      "ticketId": "TKT331086",
+      "userId": "U385985"
+    }
+```
+
+3. **User** : A logical entity which defines a user object. Example:
+
+```json
+    {
+    "userId": "U385985",
+    "userName": "Anuranjan",
+    "phoneNumber": "7906543416"
+    }
+```
+
+
 
 ## Sample Requests
-
 
 
 ### Book User Ticket
@@ -44,8 +81,8 @@ QR Code(Tryit on Your Phone):
 
 ```json
     {
-        "movieName": "Jumanji", 
-        "movieStartTime": "2017-06-01 12:22"
+        "movieName": "Inception", 
+        "movieStartTime": "2020-11-01 12:22"
     }
 ```
 
