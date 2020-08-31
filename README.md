@@ -44,16 +44,16 @@ QR Code(Tryit on Your Phone):
 
 ```json
     {
-    "userId": "U385985",
-    "userName": "Anuranjan",
-    "phoneNumber": "7906543416"
+        "userId": "U385985",
+        "userName": "Anuranjan",
+        "phoneNumber": "7906543416"
     }
 ```
 
 
 
 ## Sample Requests
-
+<details><summary>CLICK ME</summary>
 
 ### Book User Ticket
 
@@ -122,7 +122,7 @@ QR Code(Tryit on Your Phone):
         "genre": "Action"
     }
 ```
-
+</details>
 
 ## Fine-grained API Access
 ![ScreenShot_2](assets/Screenshot_2.png)
